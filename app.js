@@ -23,15 +23,9 @@ const server = http.createServer((request, response)=>{
                 data = data + chunk;
             })
             request.on('end', ()=>{
-                console.log("Data is", data);
                 var qs = require('querystring');
                 var dataObj = qs.parse(data);
-                // let obj = JSON.parse(data);
-                // var userid = obj.user;
-                console.log("Username is", dataObj.user);
-
                 if(checkUser(dataObj.user)>0){
-                    console.log("User exist");
                     response.write("USER EXIST, GO TO LOGIN PAGE");
                     response.end();
                 }else{
@@ -41,7 +35,6 @@ const server = http.createServer((request, response)=>{
                     newUser.password = dataObj.pass;
                     var users = require("./data");
                     users.push(newUser);
-
                     response.write("NEW USER ADDED TO THE LIST");
                     response.end();
                 }
@@ -55,20 +48,14 @@ const server = http.createServer((request, response)=>{
         })
         request.on('end', ()=>{
             var qs = require('querystring');
-            console.log(chalk.red("Data Is"), data);
             dataObj = qs.parse(data);
-
             var users = require("./data");
             var j = 0;
-            console.log(chalk.yellow("Data Object Is"),dataObj);
-
             for(let i = 0; i<users.length; i++){
                 // var name = users[i].name;
                 if(users[i].user == dataObj.user){
-                    console.log(chalk.red("ID IS OKAY"));
                     j = i;
-                    break;
-                    
+                    break;                    
                 }
             }
 
@@ -143,5 +130,4 @@ function checkUser(user){
     
     console.log("CHECK IS", check);
     return check;
-
 }
